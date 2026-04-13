@@ -2,8 +2,10 @@ package com.example.nit3213finalapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.nit3213finalapp.network.Entity
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -11,23 +13,29 @@ class DashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        val cardOne = findViewById<View>(R.id.cardOne)
-        val cardTwo = findViewById<View>(R.id.cardTwo)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewEntities)
 
-        cardOne.setOnClickListener {
-            openDetails(
-                "Item 1",
-                "Property 2 for item 1",
-                "This is the description for item 1."
+        val entityList = listOf(
+            Entity(
+                property1 = "Item 1",
+                property2 = "Property 2 for item 1",
+                description = "This is the description for item 1."
+            ),
+            Entity(
+                property1 = "Item 2",
+                property2 = "Property 2 for item 2",
+                description = "This is the description for item 2."
+            ),
+            Entity(
+                property1 = "Item 3",
+                property2 = "Property 2 for item 3",
+                description = "This is the description for item 3."
             )
-        }
+        )
 
-        cardTwo.setOnClickListener {
-            openDetails(
-                "Item 2",
-                "Property 2 for item 2",
-                "This is the description for item 2."
-            )
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = EntityAdapter(entityList) { entity ->
+            openDetails(entity.property1, entity.property2, entity.description)
         }
     }
 
