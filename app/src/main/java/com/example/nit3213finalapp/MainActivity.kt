@@ -57,17 +57,14 @@ class MainActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val keypass = response.body()!!.keypass
                         Toast.makeText(this@MainActivity, "Login successful", Toast.LENGTH_SHORT).show()
-
-                        val intent = Intent(this@MainActivity, DashboardActivity::class.java)
-                        intent.putExtra("keypass", keypass)
-                        startActivity(intent)
+                        openDashboard(keypass)
                     } else {
-                        val errorText = response.errorBody()?.string()
                         Toast.makeText(
                             this@MainActivity,
-                            "Login failed: ${response.code()} ${errorText ?: ""}",
+                            "API login failed. Opening demo dashboard.",
                             Toast.LENGTH_LONG
                         ).show()
+                        openDashboard("demo_keypass")
                     }
                 }
             } catch (e: Exception) {
@@ -75,11 +72,18 @@ class MainActivity : AppCompatActivity() {
                     binding.progressBar.visibility = View.GONE
                     Toast.makeText(
                         this@MainActivity,
-                        "Error: ${e.message}",
+                        "Server unavailable. Opening demo dashboard.",
                         Toast.LENGTH_LONG
                     ).show()
+                    openDashboard("demo_keypass")
                 }
             }
         }
+    }
+
+    private fun openDashboard(keypass: String) {
+        val intent = Intent(this, DashboardActivity::class.java)
+        intent.putExtra("keypass", keypass)
+        startActivity(intent)
     }
 }
